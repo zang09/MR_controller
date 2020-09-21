@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -80,8 +79,6 @@ public class MainActivity extends AppCompatActivity implements JoyStick.JoyStick
         btnBTDevices = findViewById(R.id.btDevies);
         btnOnOff = findViewById(R.id.btnOnOff);
         joyStick = findViewById(R.id.joyStick);
-        JoyStickThread thread = new JoyStickThread();
-        thread.start();
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -280,6 +277,10 @@ public class MainActivity extends AppCompatActivity implements JoyStick.JoyStick
         }
     }
 
+    public void popListParedDevices() {
+
+    }
+
     public void connectSelectedDevice(String selectedDeviceName) {
         for(BluetoothDevice tempDevice : mPairedDevices) {
             if (selectedDeviceName.equals(tempDevice.getName())) {
@@ -350,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements JoyStick.JoyStick
                     bufferQueue.offer(new byte[bytes]);
                     System.arraycopy(buffer, 0, bufferQueue.peek(), 0, bytes);
 
-                    System.out.printf("3");
                     mBluetoothHandler.obtainMessage(BT_MESSAGE_READ, bytes, -1, bufferQueue.poll()).sendToTarget();
                 }
                 catch (IOException e) {
